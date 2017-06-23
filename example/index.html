@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FPS Demo</title>
+    <meta charset="utf-8" />
+
+    <!-- standard viewport tag to set the viewport to the device's width
+    , Android 2.3 devices need this so 100% width works properly and
+    doesn't allow children to blow up the viewport width-->
+    <meta name="viewport" id="vp" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.css' rel='stylesheet' />
+    <script type='text/javascript' src='../lib/MapboxFPS.js'></script>
+
+    <style>
+
+        body {
+            margin:0; padding:0; font-family: arial;
+        }
+        h1, h2 {
+           font-size: 1em;
+        }
+        h2 {
+            font-weight: normal;
+        }
+        #map {
+            top: 100px;
+            width: 100vw;
+            height: calc(100vh - 100px);
+        }
+
+        #legend {
+            position: absolute;
+            height: 100px;
+            width: 100vw;
+            top: 0px;
+            left: 0px;
+            background: white;
+            box-sizing: border-box;
+            padding: 10px 20px;
+            padding-top: 15px;
+            box-shadow: 0px 1px 13px -3px rgba(128, 128, 128, 0.41);
+            border-radius: 4px;
+        }
+
+        .fps-control{
+            font-size: 15px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="legend">
+      <h1>Demo: FPS Counter</h1>
+      <h2>Counting render events and calculating average and generating reports</h2>
+  </div>
+<!--   <div id="fps-counter">
+      <span id="fps-counter-value">0</span>
+  </div>
+ -->
+
+    <script type="text/javascript">
+        mapboxgl.accessToken = 'pk.eyJ1IjoibWF6ZW1hcCIsImEiOiJZbGRNd09zIn0.tBjK2GIzHRFzeGfOoh8P4Q';
+        var myMap = new mapboxgl.Map({
+            container: 'map', // container id
+            style: 'mapbox://styles/mapbox/streets-v9', //stylesheet location
+            center: [-74.50, 40], // starting position
+            zoom: 9 // starting zoom
+        });
+
+        var fpsControl = new MapboxFPS.FPSControl();
+        myMap.addControl(fpsControl, 'top-right');
+
+        setTimeout(function(){
+            var report = fpsControl.measurer.getMeasurementsReport();
+            console.log('Report:', report);
+        }, 10000)
+
+    </script>
+
+</body>
+</html>
